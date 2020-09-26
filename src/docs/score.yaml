@@ -1,0 +1,87 @@
+components:
+  schemas:
+    ScoreCreateObject:
+      type: object
+      description: This represents the object structure expected when making a request to create a Score instance.
+      properties:
+        userid:
+          type: string
+          description: "This is a foreign key. It references the particular User that made this particular score It is the primary key of the User."
+          required: true
+          example: 0000-d000-0000-a000
+        value:
+          type: double
+          description: This represents the actual score value a User made on taking a quiz.
+          required: true
+          min: 0.0
+          max: 20.0
+          example: 18
+        category:
+          type: string
+          description: This is the category of the quiz taken by the User.
+          enum: [html, javascript]
+          example: html
+    ScoreUserObject:
+      type: object
+      description: A quiz score and the taker of the quiz.
+      properties:
+        scoreid:
+          type: string
+          description: This is a unique id auto-generated and is the primary key of the Score object.
+          example: 1111-a111-1111-d111
+        userid:
+          type: string
+          description: This is a foreign key. It references the particular User that made this particular score. It is the primary key of the User.
+          required: true
+          example: 0000-d000-0000-a000
+        value:
+          type: double
+          description: This represents the actual score value a User made on taking a quiz.
+          required: true
+          min: 0.0
+          max: 20.0
+          example: 18
+        category:
+          type: string
+          description: This is the category of the quiz taken by the User.
+          enum: [html, javascript]
+          example: html
+        createdAt:
+          type: string
+          description: The record of time at which the Score was created.
+        updatedAt:
+          type: string
+          description: The record of time at which the details of the Score were updated.
+        user:
+          $ref: '#/components/schemas/UserObject'
+    ScoreObject:
+      type: object
+      description: A representation of the Score model.
+      properties:
+        scoreid:
+          type: string
+          description: This is a unique id auto-generated and is the primary key of the Score object.
+          example: 1111-a111-1111-d111
+        userid:
+          type: string
+          description: This is a foreign key. It references the particular User that made this particular score. It is the primary key of the User.
+          required: true
+          example: 0000-d000-0000-a000
+        value:
+          type: double
+          description: This represents the actual score value a User made on taking a quiz.
+          required: true
+          min: 0.0
+          max: 20.0
+          example: 18
+        category:
+          type: string
+          description: This is the category of the quiz taken by the User.
+          enum: [html, javascript]
+          example: html
+        createdAt:
+          type: string
+          description: The record of time at which the Score was created.
+        updatedAt:
+          type: string
+          description: The record of time at which the details of the Score were updated.

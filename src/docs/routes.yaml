@@ -1,0 +1,194 @@
+/create-user:
+  post:
+    tags:
+      - Some CRUD Routes
+    description: Creates a new quiz taker.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserCreateObject'
+    responses:
+      '201':
+        description: A new quiz taker has been created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserObject'
+      '422':
+        description: The username already exists. A new username should be chosen.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives a summary of the error.
+                  example: This username is already taken. Try again with another username.
+      '500':
+        description: Unexpected error.
+/add-score:
+  post:
+    tags:
+      - Some CRUD Routes
+    description: Creates a new quiz taker.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ScoreCreateObject'
+    responses:
+      '201':
+        description: A new quiz score has been added.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreObject'
+      '422':
+        description: The quiz score is out of the specified range of between and not excluding 0 and 20.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives a summary of the error.
+                  example: Quiz score is not in range (0-20)
+      '500':
+        description: Unexpected error
+/get-all-scores:
+  get:
+    tags:
+      - Some CRUD Routes
+    description: Returns a list of all scores.
+    responses:
+      '200':
+        description: All scores have been successfully returned.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ScoreUserObject'
+      '404':
+        description: No scores were found.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives feedback on operation result.
+                  example: There are currently no scores in the database.
+      '500':
+        description: Unexpected error.
+/get-user-scores/{username}:
+  get:
+    tags:
+      - Some CRUD Routes
+    description: Returns a list of all the scores of a quiz taker.
+    parameters:
+      - name: username
+        in: path
+        description: This is the username of the quiz taker.
+        required: true
+        schema:
+          type: string
+          example: KofiOneZed
+    responses:
+      '200':
+        description: All scores of the quiz taker successfully returned.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserScoreObject'
+      '404':
+        description: No scores were found for the quiz taker.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives feedback on operation result.
+                  example: No scores found for KofiOneZed.
+/change-username:
+  patch:
+    tags:
+      - Some CRUD Routes
+    description: Update a quiz taker's username.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            description: The new username of the quiz taker.
+            properties:
+              username:
+                type: string
+                required: true
+                example: KofiTwoZed
+    responses:
+      '200':
+        description: Username has been updated.
+        content:
+          application/json:
+            schema:
+              type: object
+              description: The User model of the updated quiz taker.
+              properties:
+                username:
+                  type: string
+                  description: This field represents the updated username of the User.
+                  required: true
+                  example: KofiTwoZed
+                uid:
+                  type: string
+                  description: This is a unique id auto-generated and is the primary key of the User.
+                  example: 0000-d000-0000-a0000
+                country:
+                  type: string
+                  description: This is the particular country the quiz taker is from.
+                  required: true
+                  example: Ghana
+                createdAt:
+                  type: string
+                  description: The record of time at which the User was created.
+                  required: false
+                updatedAt:
+                  type: string
+                  description: The record of time at which the User was updated.
+                  required: false
+      '422':
+        description: No username was received to update quiz taker.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives a summary of the error.
+                  example: No username was received to update the quiz taker.
+      '404':
+        description: The quiz taker to update cannot be found.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Gives a summary of the error.
+                  example: The quiz taker to update cannot be found.
+      '500':
+        description: Unexpected error
