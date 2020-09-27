@@ -4,6 +4,7 @@ import swaggerJSDoc from 'swagger-jsdoc'
 
 import { specOptions, customOptions } from './docs/swagger-options'
 import postgresDB from './db-config'
+import { createUser, handleErrors } from './controller'
 
 // Create our Express application
 const app = express()
@@ -23,11 +24,14 @@ postgresDB.authenticate()
     console.error(error.message)
 })
 
+app.post('/create-user', createUser)
+
 // Sets up interface for testing the endpoints
 const docs = swaggerJSDoc(specOptions)
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs, customOptions))
 
+app.use(handleErrors)
+
 // Set up the PORT/connection tunnel we want our application to listen for requests.
-const PORT = 5000
-app.listen(PORT)
-console.log(`The quiz-app server is listening on port ${PORT}`)
+const PORT = 5700
+app.listen(PORT, () => console.log(`The quiz-app server is listening on port ${PORT}`))
